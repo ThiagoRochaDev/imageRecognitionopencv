@@ -1,24 +1,25 @@
 import json
+import cv2
 
+#def face_detect(event,context):    
 
-def hello(event, context):
-    body = {
-        "message": "Go Serverless v1.0! Your function executed successfully!",
-        "input": event
-    }
+carregaFace = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+carregaOlho = cv2.CascadeClassifier('haarcascade_eye.xml')
 
-    response = {
-        "statusCode": 200,
-        "body": json.dumps(body)
-    }
+imagem = cv2.imread('teste.jpg')
+imagemCinza = cv2.cvtColor(imagem, cv2.COLOR_BGR2GRAY)
+faces = carregaFace.detectMultiScale(imagemCinza)
 
-    return response
+for(x, y, l, a) in faces:
+    imagem = cv2.rectangle(imagem, (x, y), (x + l, y + a), (255, 0, 255), 2)
+    localOlho = imagem[y:y + a, x:x + l]
+    
+    localOlhoCinza = cv2.cvtColor(localOlho, cv2.COLOR_BGR2GRAY)   
+    detectado = carregaOlho.detectMultiScale(localOlhoCinza)
 
-    # Use this code if you don't use the http event with the LAMBDA-PROXY
-    # integration
-    """
-    return {
-        "message": "Go Serverless v1.0! Your function executed successfully!",
-        "event": event
-    }
-    """
+    for(ox, oy, ol, oa) in detectado:
+        cv2.rectangle(localOlho, (ox, oy), (ox + ol, oy + oa), (0, 255, 0), 2)
+        
+
+cv2.imshow("Detecta Face e os Olhos ", imagem)
+cv2.waitKey()
