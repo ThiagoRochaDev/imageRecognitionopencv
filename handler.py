@@ -1,12 +1,17 @@
 import json
 import cv2
+from PIL import Image  
+import PIL 
+import os
+#def lambda_handler(event,context):  
 
-#def face_detect(event,context):    
 
 carregaFace = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 carregaOlho = cv2.CascadeClassifier('haarcascade_eye.xml')
+fotos_clientes_upload = r'/home/thiagorocha/Área de Trabalho/THg/teste.jpg'
+fotos_clientes_recognition = r'/home/thiagorocha/Área de Trabalho/THg/python/'
 
-imagem = cv2.imread('teste.jpg')
+imagem = cv2.imread(fotos_clientes_upload)
 imagemCinza = cv2.cvtColor(imagem, cv2.COLOR_BGR2GRAY)
 faces = carregaFace.detectMultiScale(imagemCinza)
 
@@ -22,4 +27,7 @@ for(x, y, l, a) in faces:
         
 
 cv2.imshow("Detecta Face e os Olhos ", imagem)
-cv2.waitKey()
+#cv2.waitKey(0) espera precionar a tecla 0 pra fechar janela
+cv2.imwrite(os.path.join(fotos_clientes_recognition,"foto_cliente_recognition.jpg"), imagem) 
+
+
