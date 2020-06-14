@@ -1,23 +1,23 @@
 
-service: EsteticaFaceApp
+service: steticaFaceApp
 
 provider:
   name: aws
-  runtime: python3.8
+  runtime: python3.7
   region: sa-east-1
 
 functions:
   lambda_handler:
-    handler: lambda_handler
-    #role: arn:aws:iam::056738692191:role/teste_faceapp
+    name: lambda_handler
+    handler: handler.lambda_handler
+    role: arn:aws:iam::056738692191:role/teste_faceapp
     events:
       - s3:
-          bucket: clientupload
+          bucket: clienteupload
           event: s3:ObjectCreated:*
-          rules:
-            - prefix: images_upload/
+
       - s3:
-          bucket: clientrecognized
+          bucket: clienterecognized
           event: s3:ObjectCreated:*
           rules:
             - prefix: images_recognition/
